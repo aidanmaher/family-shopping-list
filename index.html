@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Family Shopping List</title>
+</head>
+<body>
+  <h1>Family Shopping List</h1>
+
+  <form id="itemForm">
+    <input type="text" id="item" placeholder="Item" required />
+    <input type="text" id="name" placeholder="Your Name" required />
+    <button type="submit">Add Item</button>
+  </form>
+
+  <button onclick="clearList()">Clear All Items</button>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwMJfQCPrXJm1RBoTRKflnPov9MSCe3B0FLpzt0WfQz08rumZbs59Vi1LPQcT8bQ4-L/exec'; // Replace with your Apps Script deployment URL
+
+    document.getElementById('itemForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const item = document.getElementById('item').value;
+      const name = document.getElementById('name').value;
+      const data = { item, name };
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => alert('Item added!'))
+      .catch(error => alert('Error!'));
+    });
+
+    function clearList() {
+      fetch(scriptURL + '?action=clear', { method: 'GET' })
+      .then(res => alert('List cleared!'));
+    }
+  </script>
+</body>
+</html>
